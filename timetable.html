@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>October Exam Study Timetable</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#1f2937;line-height:1.6}
+header{padding:32px 16px;text-align:center;color:white;background:linear-gradient(135deg,#4338ca,#7c3aed)}header h1{margin:0 0 8px;font-size:clamp(1.7rem,4vw,2.3rem)}header p{margin:0}
+main{width:min(900px,92%);margin:25px auto 40px}.intro,.progress-card,.day-card{background:white;border:1px solid #e2e8f0;border-radius:15px;box-shadow:0 5px 18px #0f172a0b}
+.intro,.progress-card{padding:20px;margin-bottom:18px}h2{margin:0 0 12px;font-size:1.2rem}.intro p{margin:5px 0}.day-list{display:grid;gap:17px}.day-card{overflow:hidden}
+.day-header{display:flex;align-items:center;gap:14px;padding:17px;background:#eef2ff;border-bottom:1px solid #e0e7ff}
+.date-box{flex:0 0 66px;text-align:center;padding:8px 5px;border-radius:11px;color:white;background:#4f46e5}.date-box .num{display:block;font-size:1.6rem;line-height:1.2;font-weight:800}.date-box .month{font-size:.8rem;letter-spacing:1px}
+.day-title h2{margin:0;font-size:1.12rem}.day-title p{margin:3px 0 0;color:#64748b;font-size:.9rem}.day-content{padding:18px}.session{margin-bottom:17px}.session h3{margin:0 0 6px;font-size:1rem;color:#3730a3}ul{margin:0;padding-left:22px}li{margin:6px 0}
+.break{padding:9px 12px;margin:9px 0 17px;border-radius:8px;background:#fef3c7;color:#92400e;font-size:.9rem}
+.check-area{border-top:1px solid #e5e7eb;padding-top:14px;margin-top:12px}.check-area h3{margin:0 0 8px;font-size:.98rem}.task{display:flex;align-items:flex-start;gap:9px;margin:9px 0}.task input{width:18px;height:18px;margin-top:3px;accent-color:#16a34a;flex-shrink:0}.task.done span{text-decoration:line-through;color:#64748b}
+.progress-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.track{height:12px;overflow:hidden;border-radius:99px;background:#e5e7eb}.fill{width:0;height:100%;background:#16a34a;transition:width .2s}
+button{padding:10px 15px;border:0;border-radius:9px;background:#4f46e5;color:white;font-weight:700;font-size:.95rem;cursor:pointer;margin:12px 8px 0 0}button:hover{background:#3730a3}.secondary{background:#e0e7ff;color:#3730a3}.note{color:#64748b;font-size:.9rem}footer{text-align:center;color:#64748b;padding:0 15px 26px}
+@media(max-width:540px){main{width:94%;margin-top:16px}.day-header{padding:13px;gap:10px}.day-content{padding:14px}.day-title h2{font-size:1rem}}
+@media print{body{background:white}header{background:#4338ca!important;print-color-adjust:exact}.intro,.progress-card,.day-card{box-shadow:none;break-inside:avoid}button{display:none}.day-list{gap:10px}main{width:100%;margin:12px auto}}
+</style>
+</head>
+<body>
+<header><h1>📚 My Exam Study Timetable</h1><p>8-Day Preparation Plan · 12–19 October 2026</p></header>
+<main>
+<section class="intro">
+<h2>My Exam Plan</h2>
+<p><strong>Exam starts:</strong> 20 October 2026</p>
+<p><strong>Subjects:</strong> Excel, Computer Graphics, Azure, Cyber Security &amp; Ethical Hacking, Fifth Subject</p>
+<p><strong>Daily study time:</strong> 3 hours, including breaks</p>
+<p class="note">Finish each session and tick your daily checklist. Progress is saved in this browser.</p>
+</section>
+<section class="progress-card">
+<h2>📈 Overall Progress</h2>
+<div class="progress-row"><span id="progressText">0 of 40 tasks completed</span><strong id="progressPercent">0%</strong></div>
+<div class="track" role="progressbar" aria-label="Study progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div class="fill" id="progressFill"></div></div>
+<button class="secondary" id="resetButton" type="button">Reset all checkboxes</button><button id="printButton" type="button">Print timetable</button>
+</section>
+<section class="day-list" id="dayList"></section>
+</main>
+<footer>One topic at a time. Take breaks and do your best. 🤍</footer>
+<script>
+"use strict";
+const days=[
+{day:"12",title:"Day 1 — Excel + Computer Graphics",sessions:[
+["Session 1",["Excel formulas — VLOOKUP, HLOOKUP, XLOOKUP, INDEX, FIND and ranges."]],
+["Session 2",["Practise two 10-mark answers; prepare definitions and differences."]],
+["Session 3",["Computer Graphics — revise completed topics and practise one diagram."]]]},
+{day:"13",title:"Day 2 — Azure + Cyber Security",sessions:[
+["Session 1",["Azure Unit 1 and 2 — important concepts and architecture from your syllabus."]],
+["Session 2",["Practise one or two 10-mark answers and short definitions."]],
+["Session 3",["Cyber Security — network security, information assurance and basic cryptography."]]]},
+{day:"14",title:"Day 3 — Fifth Subject + Excel",sessions:[
+["Session 1",["Fifth subject — study the two most difficult pending topics."]],
+["Session 2",["Write one 10-mark answer and practise short answers."]],
+["Session 3",["Excel — Pivot Tables, Pivot Charts, bar/line charts and secondary axis."]]]},
+{day:"15",title:"Day 4 — Computer Graphics + Azure",sessions:[
+["Session 1",["Computer Graphics — pending unit topics, algorithms and diagrams from your syllabus."]],
+["Session 2",["Practise two 10-mark answers and five short questions."]],
+["Session 3",["Azure — Unit 3 and 4 important topics; revise Unit 1 and 2 briefly."]]]},
+{day:"16",title:"Day 5 — Cyber Security + Fifth Subject",sessions:[
+["Session 1",["Symmetric/public-key encryption, DNS, firewalls and tunnelling."]],
+["Session 2",["Social engineering, attacker motivation, fraud and threat infrastructure; practise answers."]],
+["Session 3",["Fifth subject — pending topics and short-answer revision."]]]},
+{day:"17",title:"Day 6 — First Revision Round",sessions:[
+["Session 1",["Excel — all five units, formulas, charts and important differences."]],
+["Session 2",["Computer Graphics — revise important 10-mark answers and diagrams."]],
+["Session 3",["Azure — revise Unit 1–5 headings and test yourself."]]]},
+{day:"18",title:"Day 7 — Second Revision Round",sessions:[
+["Session 1",["Cyber Security — important 10-mark answers, diagrams and definitions."]],
+["Session 2",["Fifth subject — revise all units and practise likely questions."]],
+["Session 3",["Quick recall of difficult topics from the other four subjects."]]]},
+{day:"19",title:"Day 8 — Final Revision",sessions:[
+["Session 1",["Revise the subject you have first on the exam timetable."]],
+["Session 2",["Important 10-mark answer outlines, short answers, formulas and diagrams."]],
+["Session 3",["Self-test, check exam essentials and stop studying in time to rest."]]]}
+];
+const tasks=["Finish and understand this day's topics","Practise the planned 10-mark answer(s)","Revise short answers and definitions","Recall key points without looking at notes","Review doubts and revise difficult topics"];
+const storeKey="octoberExamTimetableChecklistV1";let checked={};
+try{checked=JSON.parse(localStorage.getItem(storeKey)||"{}")||{};}catch(e){checked={};}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ document.getElementById("dayList").innerHTML=days.map((d,i)=>{
+  const sessions=d.sessions.map((s,j)=>`<section class="session"><h3>${esc(s[0])} <span class="note">(${j<2?"50 minutes":"60 minutes"})</span></h3><ul>${s[1].map(p=>`<li>${esc(p)}</li>`).join("")}</ul></section>${j<2?'<div class="break">☕ Break: 10 minutes — rest, drink water, and stretch.</div>':""}`).join("");
+  const checks=tasks.map((t,j)=>{const k=`d${i}t${j}`,on=!!checked[k];return `<label class="task ${on?"done":""}"><input type="checkbox" data-key="${k}" ${on?"checked":""}><span>${esc(t)}</span></label>`;}).join("");
+  return `<article class="day-card"><div class="day-header"><div class="date-box"><span class="num">${d.day}</span><span class="month">OCT</span></div><div class="day-title"><h2>${esc(d.title)}</h2><p>October 2026</p></div></div><div class="day-content">${sessions}<section class="check-area"><h3>Daily checklist</h3>${checks}</section></div></article>`;
+ }).join("");
+ document.querySelectorAll("[data-key]").forEach(box=>box.addEventListener("change",e=>{const k=e.target.dataset.key;if(e.target.checked)checked[k]=true;else delete checked[k];try{localStorage.setItem(storeKey,JSON.stringify(checked));}catch(err){}e.target.closest(".task").classList.toggle("done",e.target.checked);progress();}));
+ progress();
+}
+function progress(){const total=40,count=Math.min(Object.values(checked).filter(Boolean).length,total),pct=Math.round(count/total*100);document.getElementById("progressText").textContent=`${count} of ${total} tasks completed`;document.getElementById("progressPercent").textContent=pct+"%";document.getElementById("progressFill").style.width=pct+"%";document.getElementById("progressBar").setAttribute("aria-valuenow",pct);}
+document.getElementById("resetButton").addEventListener("click",()=>{if(!confirm("Reset all checklist progress?"))return;checked={};try{localStorage.removeItem(storeKey);}catch(e){}render();});
+document.getElementById("printButton").addEventListener("click",()=>window.print());
+render();
+</script>
+</body>
+</html>

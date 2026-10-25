@@ -1,0 +1,159 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #4f46e5;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #333;
+    margin-top: 25px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #3730a3;
+}
+
+a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    line-height: 2;
+    padding-left: 25px;
+}
+
+.study-details {
+    background: #f4f7fb;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.study-details p {
+    margin: 10px 0;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+}
+
+.day-check {
+    margin-right: 8px;
+}
+/* Modern Study Planner Theme */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #eef5ff, #f6f0ff);
+    color: #172554;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 6px 24px rgba(60, 80, 160, 0.12);
+}
+
+h1, h2, h3 {
+    color: #3730a3;
+}
+
+button {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #3730a3;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    max-width: 100%;
+}
+
+#progressBar {
+    width: 100%;
+    height: 18px;
+    accent-color: #4f46e5;
+}
+
+a {
+    color: #4338ca;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

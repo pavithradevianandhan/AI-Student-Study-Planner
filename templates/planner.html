@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plan Your Studies | AI Study Planner</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #edf5ff, #f4efff);
+            color: #172554;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 18px 6%;
+            background: white;
+            box-shadow: 0 3px 15px #dbe5ff;
+        }
+
+        .logo {
+            color: #3730a3;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #3730a3;
+            font-weight: bold;
+        }
+
+        .page-layout {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 0.85fr 1.6fr;
+            gap: 25px;
+            align-items: stretch;
+        }
+
+        .welcome-card,
+        .form-card,
+        .subjects-card {
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            border: 1px solid #dce6ff;
+            box-shadow: 0 8px 25px #dce5ff;
+        }
+
+        .welcome-card {
+            text-align: center;
+            background: linear-gradient(145deg, white, #e9eaff);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome-icon {
+            font-size: 65px;
+        }
+
+        h1, h2, h3 {
+            color: #3730a3;
+        }
+
+        .welcome-card p {
+            line-height: 1.8;
+            color: #64748b;
+        }
+
+        .form-card h1 {
+            margin-top: 0;
+            font-size: 27px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #fbfdff;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #a5b4fc;
+            border-color: #6366f1;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #3730a3;
+        }
+
+        .subjects-card {
+            grid-column: 1 / -1;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        .subject-item {
+            padding: 15px;
+            border-radius: 10px;
+            background: #f0f4ff;
+            border: 1px solid #e0e7ff;
+            text-align: center;
+            color: #3730a3;
+            font-weight: bold;
+        }
+
+        .tip {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff9e8;
+            border-radius: 10px;
+            color: #795719;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #4338ca;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        @media (max-width: 750px) {
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .subjects-card {
+                grid-column: auto;
+            }
+
+            .navbar {
+                justify-content: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">🎓 AI Student Study Planner</div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/planner">Plan Your Studies</a>
+            <a href="/details">View Details</a>
+        </div>
+    </nav>
+
+    <main class="page-layout">
+
+        <section class="welcome-card">
+            <div class="welcome-icon">📚 ✨</div>
+
+            <h2>Create Your Study Plan</h2>
+
+            <p>
+                Enter your details and get a personalized study plan
+                with topics, schedule, and study resources.
+            </p>
+
+            <p><b>"Small steps today, big results tomorrow!"</b></p>
+        </section>
+
+        <section class="form-card">
+            <h1>📅 Plan Your Studies</h1>
+
+            <p>Fill in your details to organize your exam preparation.</p>
+
+            <form action="/planner" method="POST">
+
+                <div class="form-group">
+                    <label for="student_name">Student Name</label>
+                    <input
+                        type="text"
+                        id="student_name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        placeholder="Example: Python, Java, DBMS"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="hours">Study Hours Per Day</label>
+                    <input
+                        type="number"
+                        id="hours"
+                        name="hours"
+                        placeholder="Example: 3"
+                        min="1"
+                        max="24"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exam_date">Exam Date</label>
+                    <input
+                        type="date"
+                        id="exam_date"
+                        name="exam_date"
+                        required>
+                </div>
+
+                <button class="submit-btn" type="submit">
+                    ✨ Generate Study Plan
+                </button>
+
+            </form>
+
+            <a class="back-link" href="/">← Back to Home</a>
+        </section>
+
+        <section class="subjects-card">
+            <h2>📘 Supported Subjects</h2>
+
+            <div class="subjects-grid">
+                <div class="subject-item">🐍 Python</div>
+                <div class="subject-item">☕ Java</div>
+                <div class="subject-item">🗄️ DBMS</div>
+                <div class="subject-item">💻 C++</div>
+            </div>
+
+            <div class="tip">
+                💡 <b>Study Tip:</b> Enter your available study hours
+                and exam date to help organize your preparation.
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        AI Student Study Planner | Plan • Learn • Grow 💜
+    </footer>
+
+    <script>
+        const examDateInput = document.getElementById("exam_date");
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        examDateInput.min = `${year}-${month}-${day}`;
+    </script>
+
+</body>
+</html>

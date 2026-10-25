@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Study Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef5ff, #f5f0ff);
+            color: #1e293b;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 18px 5%;
+            background: white;
+            box-shadow: 0 3px 15px #dce5ff;
+        }
+
+        .logo { color: #3730a3; font-weight: bold; font-size: 20px; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 18px; }
+
+        .nav-links a {
+            color: #4338ca;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .welcome {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 18px;
+            background: linear-gradient(120deg, white, #e1e8ff);
+            border: 1px solid #dce5ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome h1 { color: #312e81; margin-top: 0; }
+        .welcome p { line-height: 1.7; }
+
+        .info-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+        .chip {
+            background: white;
+            border: 1px solid #dbeafe;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: #3730a3;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .card {
+            min-width: 0;
+            background: white;
+            border: 1px solid #dce6ff;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.07);
+        }
+
+        h2 { color: #3730a3; margin-top: 0; }
+
+        .topic-list { list-style: none; padding: 0; margin: 0; }
+
+        .topic-list li {
+            padding: 13px;
+            margin: 10px 0;
+            border: 1px solid #e0e7ff;
+            border-radius: 10px;
+            background: #fbfdff;
+        }
+
+        .topic-list label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .day-check {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: #4f46e5;
+            flex-shrink: 0;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            text-align: center;
+            margin: 18px 0;
+        }
+
+        .stat {
+            padding: 14px 5px;
+            background: #f0f4ff;
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .stat p { margin-bottom: 5px; font-size: 13px; }
+        .stat strong { font-size: 23px; color: #4338ca; }
+
+        #progressBar { width: 100%; height: 18px; accent-color: #4f46e5; }
+
+        button, .primary-link {
+            display: inline-block;
+            border: none;
+            border-radius: 9px;
+            padding: 12px 17px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover, .primary-link:hover { background: #3730a3; }
+        .reset-btn { width: 100%; margin-top: 16px; }
+
+        .resource-item {
+            padding: 13px;
+            margin: 10px 0;
+            border: 1px solid #e0e7ff;
+            border-radius: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .resource-item h3 { color: #3730a3; margin-top: 0; }
+        .resource-item a { font-weight: bold; }
+
+        .bottom-links {
+            max-width: 1200px;
+            margin: 10px auto 30px;
+            padding: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #3730a3;
+            color: white;
+        }
+
+        @media (max-width: 760px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .welcome { margin: 15px; }
+            .navbar { justify-content: center; }
+            .nav-links { justify-content: center; }
+        }
+
+        @media (max-width: 380px) {
+            .progress-stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">🎓 AI Student Study Planner</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/planner">Plan Your Studies</a>
+        <a href="/details">View Details</a>
+    </div>
+</nav>
+
+<section class="welcome">
+    <div>
+        <h1>Welcome, {{ name }}! 👋</h1>
+        <p>Small steps every day lead to big results. Keep going!</p>
+    </div>
+
+    <div class="info-chips">
+        <div class="chip">🎯 Subject: <b>{{ subject }}</b></div>
+        <div class="chip">📅 Exam: <b>{{ exam_date }}</b></div>
+        <div class="chip">⏰ Study: <b>{{ hours }} hours/day</b></div>
+        <div class="chip">🗓️ Days left: <b>{{ days_left }}</b></div>
+    </div>
+</section>
+
+<main class="dashboard">
+
+    <section>
+        <div class="card">
+            <h2>📅 Daily Study Schedule</h2>
+            <p>Tick each topic when you finish studying it.</p>
+
+            <ul class="topic-list">
+                {% for item in schedule %}
+                <li>
+                    <label>
+                        <input type="checkbox" class="day-check">
+                        <span>{{ item }}</span>
+                    </label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📺 Recommended Study Videos</h2>
+            <p>Learn {{ subject }} with these resources.</p>
+
+            {% for video in videos %}
+            <div class="resource-item">
+                <h3>▶️ {{ video.title }}</h3>
+                <a href="{{ video.url }}" target="_blank" rel="noopener noreferrer">
+                    Watch on YouTube →
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h2>🔬 Research Explorer</h2>
+            <p>Explore research resources related to {{ subject }}.</p>
+
+            {% for resource in resources %}
+            <div class="resource-item">
+                <h3>📄 {{ resource.title }}</h3>
+                <p><b>Type:</b> {{ resource.type }}</p>
+                <p>{{ resource.description }}</p>
+                <a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer">
+                    Read Research Paper →
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <aside>
+        <div class="card">
+            <h2>📊 Study Progress</h2>
+
+            <div class="progress-stats">
+                <div class="stat">
+                    <p>Completed Topics</p>
+                    <strong><span id="completedDays">0</span> / {{ schedule|length }}</strong>
+                </div>
+                <div class="stat">
+                    <p>Remaining Topics</p>
+                    <strong id="remainingDays">{{ schedule|length }}</strong>
+                </div>
+                <div class="stat">
+                    <p>Progress</p>
+                    <strong id="progressPercent">0%</strong>
+                </div>
+            </div>
+
+            <progress id="progressBar" value="0" max="{{ schedule|length }}"></progress>
+
+            <button type="button" class="reset-btn" onclick="resetProgress()">
+                🔄 Reset Progress
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>🌐 Trusted Study Websites</h2>
+
+            {% for website in websites %}
+            <div class="resource-item">
+                <h3>{{ website.title }}</h3>
+                <a href="{{ website.url }}" target="_blank" rel="noopener noreferrer">
+                    Open Website →
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h2>🔎 Google Study Materials</h2>
+            <p>Find more learning materials for {{ subject }}.</p>
+            <a class="primary-link" href="{{ google_search }}" target="_blank" rel="noopener noreferrer">
+                Search on Google →
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>💡 Quick Study Tips</h2>
+            <p>✓ Take short breaks.</p>
+            <p>✓ Practice questions regularly.</p>
+            <p>✓ Revise completed topics.</p>
+            <p>✓ Keep following your schedule.</p>
+        </div>
+    </aside>
+
+</main>
+
+<div class="bottom-links">
+    <a class="primary-link" href="{{ url_for('quiz', subject=subject) }}">📝 Take Quiz</a>
+    <a class="primary-link" href="/planner">← Create Another Plan</a>
+    <a class="primary-link" href="/">← Back to Home</a>
+</div>
+
+<footer>AI Student Study Planner | Plan • Learn • Grow 💜</footer>
+
+<script>
+    const checkboxes = document.querySelectorAll(".day-check");
+    const completedDays = document.getElementById("completedDays");
+    const progressBar = document.getElementById("progressBar");
+    const remainingDays = document.getElementById("remainingDays");
+    const progressPercent = document.getElementById("progressPercent");
+
+    const storageKey = "studyPlannerProgress";
+    checkboxes.forEach(function(box, index) {
+        box.checked = localStorage.getItem(storageKey + index) === "true";
+    });
+
+    function updateProgress() {
+        let completed = 0;
+
+        checkboxes.forEach(function(box) {
+            if (box.checked) completed++;
+        });
+
+        const total = checkboxes.length;
+        const remaining = total - completed;
+        const percentage = total > 0
+            ? Math.round((completed / total) * 100)
+            : 0;
+
+        completedDays.textContent = completed;
+        remainingDays.textContent = remaining;
+        progressPercent.textContent = percentage + "%";
+        progressBar.value = completed;
+    }
+
+    checkboxes.forEach(function(box, index) {
+        box.addEventListener("change", function() {
+            localStorage.setItem(storageKey + index, box.checked);
+            updateProgress();
+        });
+    });
+
+    function resetProgress() {
+        if (confirm("Are you sure you want to reset your study progress?")) {
+            checkboxes.forEach(function(box, index) {
+                box.checked = false;
+                localStorage.removeItem(storageKey + index);
+            });
+            updateProgress();
+        }
+    }
+
+    updateProgress();
+</script>
+
+<script>
+document.querySelectorAll(".topic-item").forEach(function(item, index) {
+    const checkbox = item.querySelector(".topic-checkbox");
+    const button = item.querySelector(".complete-btn");
+
+    const key = "study-topic-" + index;
+
+    // Previously completed topics-ai restore pannum
+    checkbox.checked = localStorage.getItem(key) === "done";
+
+    button.addEventListener("click", function() {
+        checkbox.checked = true;
+        localStorage.setItem(key, "done");
+        button.textContent = "Completed ✓";
+        button.disabled = true;
+    });
+
+    if (checkbox.checked) {
+        button.textContent = "Completed ✓";
+        button.disabled = true;
+    }
+});
+</script>
+
+
+</body>
+</html>

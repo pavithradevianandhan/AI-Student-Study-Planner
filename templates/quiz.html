@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }} Quiz</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<div class="container">
+
+    <h1>📝 {{ subject }} Practice Quiz</h1>
+
+    {% if submitted %}
+        <h2>🎉 Quiz Result</h2>
+
+        <p>
+            Your Score: <b>{{ score }} / {{ questions|length }}</b>
+        </p>
+
+        <p>
+            Percentage:
+            <b>
+                {{ ((score / questions|length) * 100)|round(1)
+                   if questions|length else 0 }}%
+            </b>
+        </p>
+
+        <a href="{{ url_for('quiz', subject=subject.lower()) }}">
+            Try Another Random Quiz
+        </a>
+
+        <br><br>
+        <a href="/planner">Back to Study Planner</a>
+
+    {% else %}
+
+        <p>Answer all 15 questions and submit your quiz.</p>
+
+        <form method="POST">
+
+            {% for question in questions %}
+
+                {% set question_index = loop.index0 %}
+
+                <div class="study-details">
+                    <h3>
+                        Question {{ loop.index }}:
+                        {{ question.question }}
+                    </h3>
+
+                    {% for option in question.options %}
+                        <label>
+                            <input
+                                type="radio"
+                                name="q{{ question_index }}"
+                                value="{{ option }}"
+                                required
+                            >
+                            {{ option }}
+                        </label>
+                        <br>
+                    {% endfor %}
+                </div>
+
+            {% endfor %}
+
+            <button type="submit">Submit Quiz</button>
+
+        </form>
+
+    {% endif %}
+
+</div>
+</body>
+</html>
+
